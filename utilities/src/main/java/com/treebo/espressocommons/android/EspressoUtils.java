@@ -3,6 +3,10 @@ package com.treebo.espressocommons.android;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.*;
+import android.support.test.espresso.action.GeneralLocation;
+import android.support.test.espresso.action.GeneralSwipeAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.*;
 import android.support.v7.widget.RecyclerView;
@@ -107,7 +111,7 @@ public class EspressoUtils {
     public static void tapContentText(Matcher matcher, String St){
         ViewInteraction treeboButtonClick = onView(
                 allOf(matcher,
-                        withContentDescription(St),
+                        withContentDescription(containsString(St)),
                         isDisplayed()));
         treeboButtonClick.perform(customClick());
     }
@@ -258,6 +262,11 @@ public class EspressoUtils {
         return stringHolder[0];
     }
 
+    public static ViewAction swipeUpSlow() {
+        return new GeneralSwipeAction(Swipe.SLOW, GeneralLocation.BOTTOM_CENTER,
+                GeneralLocation.TOP_CENTER, Press.FINGER);
+    }
+
     //Method to enter text
     public static void scroll(Matcher matcher){
         onView(matcher).perform(scrollTo());
@@ -279,8 +288,12 @@ public class EspressoUtils {
     }
 
     //Method to swipe up
-    public static void swipeToTop(Matcher matcher){
-        onView(matcher).perform(swipeUp());
+    public static void swipeToTop(Matcher matcher, String... options){
+        if(options == null || options.length == 0)
+            onView(matcher).perform(swipeUp());
+        else
+        if(options[0] != null && options[0] == "SLOW")
+            onView(matcher).perform(swipeUpSlow());
     }
 
     //Methods for force sleep
@@ -413,4 +426,40 @@ public class EspressoUtils {
         };
     }
 
+    public static boolean isViewVisible(Matcher matcher) {
+        try {
+            isViewEnabled(matcher);
+            return true;
+        }catch(Exception e) {
+            return false;
+        }
+    }
+
+    /* matcher - view on which swipe is performed (e.g. RecyclerView)
+       elementToFind - elementToFind is view till which swipe will be performed
+       swipeDirection - direction in which swipe will be performed (top/down/left/right)
+       maxNoOfSwipes - no of maximum swipe attempts
+     */
+    public static boolean swipeToElement(Matcher matcher, Matcher elementToFind, String swipeDirection, int maxNoOfSwipes){
+        for(int i=0;i<maxNoOfSwipes;i++) {
+            if(isViewVisible(elementToFind)){
+                return true;
+            }
+            switch (swipeDirection) {
+                case "left":
+                    swipeToLeft(matcher);
+                    break;
+                case "right":
+                    swipeToRight(matcher);
+                    break;
+                case "top":
+                    swipeToTop(matcher, "SLOW");
+                    break;
+                case "down":
+                    swipeToDown(matcher);
+                    break;
+            }
+        }
+        return false;
+    }
 }
