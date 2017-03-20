@@ -13,6 +13,18 @@ buildscript {
         classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
     }
 }
+
+spoon{
+    debug = true
+    //className = 'class_name'
+    grantAllPermissions = true
+    shard = true
+
+    if (project.hasProperty('spoonClassName')) {
+        className = project.spoonClassName
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -74,4 +86,6 @@ dependencies {
 
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.5'
     compile 'com.squareup.spoon:spoon-client:1.6.4'
+
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }

@@ -6,5 +6,5 @@ package com.treebo.espressocommons.configurations;
 
 public class DataFiles {
 
-    public static final int ConfigPropertiesFile = 0;//com.treebo.bumblebee.debug.test.R.raw.config;
+    public static final int ConfigPropertiesFile = com.treebo.espressocommons.R.raw.config;
 }
