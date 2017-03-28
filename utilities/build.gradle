@@ -1,8 +1,12 @@
 apply plugin: 'com.android.library'
 apply plugin: 'spoon'
+apply from: 'maven-push.gradle'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://raw.github.com/synergian/wagon-git/releases"
+    }
 }
 
 buildscript {
@@ -54,6 +58,10 @@ android {
     }
 }
 
+configurations {
+    deployerJar
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -85,7 +93,9 @@ dependencies {
     compile 'com.android.support:support-annotations:25.2.0'
 
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.5'
-    compile 'com.squareup.spoon:spoon-client:1.6.4'
+    compile 'com.squareup.spoon:spoon-client:1.7.1'
 
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+
+    deployerJar "ar.com.synergian:wagon-git:0.2.3"
 }

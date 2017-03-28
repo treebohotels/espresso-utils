@@ -1,12 +1,14 @@
+/**
+ * Created by kishorepolisetty on 02/02/17.
+ */
+
 package com.treebo.espressocommons.android;
 
+import android.app.Activity;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.*;
-import android.support.test.espresso.action.GeneralLocation;
-import android.support.test.espresso.action.GeneralSwipeAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Swipe;
+import android.support.test.espresso.action.*;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.*;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +19,11 @@ import org.hamcrest.*;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
-import static android.support.test.espresso.intent.Checks.checkNotNull;
+import static android.support.test.espresso.intent.Checks.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static android.support.test.espresso.action.ViewActions.*;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 
 import android.view.ViewGroup;
 import android.widget.*;
@@ -29,10 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by kishorepolisetty on 02/02/17.
- */
+ * Custom Espresso methods for android applications
+ **/
 
 public class EspressoUtils {
+
 
     public static View getListView(Matcher matcher){
         final ListView[] listView = new ListView[1];
@@ -157,43 +161,82 @@ public class EspressoUtils {
                 );
     }
 
+    /**********************************************************
+    *  isCheckboxEnabled method checks for if the checkbox is
+    ***********************************************************/
     public static ViewInteraction isCheckboxEnabled(Matcher matcher){
-        return onView(matcher).
-                check(ViewAssertions.matches(
-                        ViewMatchers.isChecked())
-                );
+        String TAG = "Is Checkbox Enabled?";
+        ViewInteraction isCheckboxEnabled = null;
+        try{
+            isCheckboxEnabled = onView(matcher).
+                    check(ViewAssertions.matches(
+                            ViewMatchers.isChecked())
+                    );
+            Log.i(TAG,"True");
+
+        }catch (Exception e){
+            Log.e(TAG,"No");
+            throw e;
+        }
+        return isCheckboxEnabled;
     }
 
     public static ViewInteraction isCheckboxNotEnabled(Matcher matcher){
-        return onView(matcher).
-                check(ViewAssertions.matches(
-                        ViewMatchers.isNotChecked())
-                );
+        String TAG = "Checkbox Not Enabled?";
+        ViewInteraction isCheckboxNotEnabled = null;
+        try{
+            isCheckboxNotEnabled = onView(matcher).
+                    check(ViewAssertions.matches(
+                            ViewMatchers.isNotChecked())
+                    );
+            Log.i(TAG,"True");
+
+        }catch (Exception e){
+            Log.e(TAG,"No");
+            throw e;
+        }
+        return isCheckboxNotEnabled;
     }
 
     public static ViewInteraction viewWithText(String str){
+        Boolean status = false;
+        String TAG = "Is Text Displayed?";
         ViewInteraction textView;
         try{
             textView = onView(allOf(withText(str), isDisplayed()));
+            Log.i(TAG,"True");
+            status = true;
             return textView;
-        }catch (Throwable T){
-            T.printStackTrace();
+        }catch (Exception e){
+            Log.e(TAG,"No");
+            throw e;
         }finally {
-            textView = onView(allOf(withText(equalToIgnoringCase(str)), isDisplayed()));
-            return textView;
+            if(!status) {
+                textView = onView(allOf(withText(equalToIgnoringCase(str)), isDisplayed()));
+                Log.i(TAG, "True");
+                return textView;
+            }
         }
     }
 
     public static ViewInteraction viewWithIdText(Matcher m, String str){
+        Boolean status = false;
+        String TAG = "Text enabled with Matcher?";
         ViewInteraction textView;
         try{
             textView = onView(allOf(m, withText(str), isDisplayed()));
+            Log.i(TAG,"True");
+            status = true;
             return textView;
-        }catch (Throwable T){
-            T.printStackTrace();
+        }catch (Exception e){
+            Log.e(TAG,"No");
+            throw e;
         }finally {
-            textView = onView(allOf(m, withText(equalToIgnoringCase(str)), isDisplayed()));
-            return textView;
+            if(!status) {
+                textView = onView(allOf(m, withText(equalToIgnoringCase(str)), isDisplayed()));
+                Log.i(TAG, "True");
+                return textView;
+            }
         }
     }
 
@@ -214,20 +257,20 @@ public class EspressoUtils {
 
     //Method to tap on button
     public static void tapButton(Matcher matcher, String... args){
+        String TAG = "Tap on button?";
         Boolean status = false;
         try {
             EspressoUtils.isViewEnabled(matcher);
             onView(matcher).perform(EspressoUtils.customClick());
             status = true;
-            Log.d("Tap on button status is", status.toString());
-        }catch (Throwable e){
-            e.printStackTrace();
+            Log.i(TAG, "Tapped button: " + status.toString());
+        }catch (Exception e){
+            Log.e(TAG, "Unable to tap on button");
         }
         finally {
             if(!status) {
                 onView(allOf(matcher)).perform(click());
-                //onView(matcher).check(matches(allOf(isEnabled(), isClickable()))).perform(EspressoUtils.customClick());
-                Log.d("Tap on button status is", status.toString());
+                Log.i(TAG, "Tapped button: " + status.toString());
             }
         }
     }
@@ -405,6 +448,10 @@ public class EspressoUtils {
         onView(matcher).check(matches(withText(St)));
     }
 
+    /*
+        matcher - view on which is enabled
+        isViewVisible(matcher)
+    */
     public static Matcher<View> atPosition(final int position, @NonNull final Matcher<View> itemMatcher) {
         checkNotNull(itemMatcher);
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
@@ -426,6 +473,10 @@ public class EspressoUtils {
         };
     }
 
+    /*
+        matcher - view on which is enabled
+        isViewVisible(matcher)
+    */
     public static boolean isViewVisible(Matcher matcher) {
         try {
             isViewEnabled(matcher);
@@ -435,11 +486,12 @@ public class EspressoUtils {
         }
     }
 
-    /* matcher - view on which swipe is performed (e.g. RecyclerView)
+    /*
+       matcher - view on which swipe is performed (e.g. RecyclerView)
        elementToFind - elementToFind is view till which swipe will be performed
        swipeDirection - direction in which swipe will be performed (top/down/left/right)
        maxNoOfSwipes - no of maximum swipe attempts
-     */
+    */
     public static boolean swipeToElement(Matcher matcher, Matcher elementToFind, String swipeDirection, int maxNoOfSwipes){
         for(int i=0;i<maxNoOfSwipes;i++) {
             if(isViewVisible(elementToFind)){
@@ -461,5 +513,33 @@ public class EspressoUtils {
             }
         }
         return false;
+    }
+
+    /*
+       getActivity() will return the current screen activity
+       This method is being used while taking screenshots with spoon plugin or with any other plugin
+    */
+    public static Activity getActivity() {
+        final Activity[] currentActivity = new Activity[1];
+        onView(allOf(withId(android.R.id.content), isDisplayed())).perform(new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(View.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Retrieving text from view";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                if (view.getContext() instanceof Activity) {
+                    Activity finalActivity = ((Activity)view.getContext());
+                    currentActivity[0] = finalActivity;
+                }
+            }
+        });
+        return currentActivity[0];
     }
 }

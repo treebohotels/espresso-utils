@@ -32,6 +32,11 @@ public class PropertiesUtils {
         return value;
     }
 
+    /**
+     * Load properties for the given input file
+     *
+     * If properties already loaded, appends new properties with the existing properties
+     */
     public static Properties loadProperties(int rawId){
         try{
             InputStream ins = InstrumentationRegistry.getInstrumentation().getContext().getResources().openRawResource(rawId);

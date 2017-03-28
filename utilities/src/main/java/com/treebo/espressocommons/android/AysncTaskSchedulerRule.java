@@ -14,7 +14,10 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by kishorepolisetty on 16/02/17.
- */
+ *
+ * AysncTaskSchedulerRule is a Test Rule which waits until screen loads completely.
+ *
+ **/
 
 public class AysncTaskSchedulerRule implements TestRule{
 

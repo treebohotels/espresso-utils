@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-/**
- * Created by kishorepolisetty on 14/03/17.
- */
-
 public class DateUtility {
 
+    /**
+     * compareDates() method will compare two dates.
+     * If does not match throws exception, else will not throw any error
+     */
     public static void compareDates(String d1, String d2) {
         String tempDate = d1.substring(0, 2);
         String tempYear = d1.substring(d1.length()-4);

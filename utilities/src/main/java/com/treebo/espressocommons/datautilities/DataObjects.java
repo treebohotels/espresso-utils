@@ -15,6 +15,9 @@ public class DataObjects {
     private LinkedHashMap<Object,Object> lhm = null;
     private HashMap<String, String> dataObj = null;
 
+    /**
+    * randomString(<length>) generates random alphabetical string for the given length
+    **/
     public String randomString( int len ){
         final String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         Random rnd = new Random();
@@ -26,6 +29,11 @@ public class DataObjects {
         return sb.toString();
     }
 
+    /**
+     * readYaml(<file>, <index>) reads file name and index
+     * Reads Yaml files and loads data for the given index in to Hashmap
+     * Returns Hashmap<String,String> to readYaml Method
+     **/
     public HashMap<String, String> readYaml(int fileName, int recordNo, String... randomStr){
         String TAG = "Read Data Objects";
         dataObj = new HashMap<String, String>();
@@ -44,7 +52,7 @@ public class DataObjects {
         for ( Object key : lhm.keySet() ) {
             dataObj.put(key.toString(),lhm.get(key).toString());
         }
-        Log.i(TAG+fileName,"Yaml Record:" + recordNo + "   &&&&   Data:" + dataObj);
+        Log.i(TAG,"Yaml Record:" + recordNo + "   &&&&   Data:" + dataObj);
         return dataObj;
     }
 }
