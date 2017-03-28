@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Chris Banes
+ * Copyright 2017 Treebo Hotels
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,11 +80,11 @@ uploadArchives.dependsOn lookForArtifacts
         repositories.mavenDeployer {
 
             configuration = configurations.deployLibrary
-            repository(url: 'git:releases://' + DOMAIN_NAME + '@bitbucket.org/' + COMPANY + '/' + REPOSITORY_NAME + '.git') {
+            repository(url: getReleaseRepositoryUrl()) {
                 authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
             }
 
-            snapshotRepository(url: 'git:snapshots://' + DOMAIN_NAME + '@bitbucket.org/' + COMPANY + '/' + REPOSITORY_NAME + '.git'){
+            snapshotRepository(url: getSnapshotRepositoryUrl()){
                 authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
             }
 
@@ -130,7 +130,7 @@ uploadArchives.dependsOn lookForArtifacts
 
 
 /******************************************
-* Methods
+* Initializing the methods with right values
 ******************************************/
 
 def urlExists(String repositoryUrl) {
@@ -162,17 +162,17 @@ def getBase64EncodedCredentials() {
 }
 
 def isReleaseBuild() {
-    return VERSION_NAME.contains("SNAPSHOT") == false
+    return ARTIFACT_VERSION.contains("SNAPSHOT") == false
 }
 
 def getReleaseRepositoryUrl() {
     return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
-            : "git:releases://git@bitbucket.org:treebo/espressocommons.git"
+            : 'git:releases://' + DOMAIN_NAME + '@bitbucket.org/' + COMPANY + '/' + REPOSITORY_NAME + '.git'
 }
 
 def getSnapshotRepositoryUrl() {
     return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
-            : "git:snapshots://git@bitbucket.org:treebo/espressocommons.git"
+            : 'git:snapshots://' + DOMAIN_NAME + '@bitbucket.org/' + COMPANY + '/' + REPOSITORY_NAME + '.git'
 }
 
 def getRepositoryUsername() {
