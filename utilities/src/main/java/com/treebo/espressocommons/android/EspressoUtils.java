@@ -542,4 +542,25 @@ public class EspressoUtils {
         });
         return currentActivity[0];
     }
+
+    /***************************************************************************************
+     * Method Name : waitForElementToLoad
+     * Arguments : Matcher, retryInterval, maxWaitTime
+     * Method Description : This method waits for an element to load.
+     * It will keep on trying to find element after every (retryInterval) ms and
+     * will wait for maximum time of (maxWaitTime) ms
+    ****************************************************************************************/
+    public void waitForElementToLoad(Matcher matcher,int retryInterval, int maxWaitTime){
+        int count = 0;
+        while(true){
+            try{
+                EspressoUtils.isViewEnabled(matcher);
+                break;
+            }catch(Exception e){
+                count+=retryInterval;
+                if (count >= maxWaitTime) throw e;
+                EspressoUtils.forceWait(retryInterval);
+            }
+        }
+    }
 }
