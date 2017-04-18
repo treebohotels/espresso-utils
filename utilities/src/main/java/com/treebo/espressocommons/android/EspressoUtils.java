@@ -7,6 +7,7 @@ package com.treebo.espressocommons.android;
 import android.app.Activity;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.*;
 import android.support.test.espresso.action.*;
 import android.support.test.espresso.assertion.ViewAssertions;
@@ -28,6 +29,7 @@ import static org.hamcrest.core.AllOf.allOf;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -145,6 +147,7 @@ public class EspressoUtils {
         ViewInteraction textView;
         try{
             textView = onView(allOf(withText(containsString(str)), isEnabled()));
+            //onView(withId(InstrumentationRegistry.getInstrumentation().getContext().getResources().getIdentifier("",null,null)));
             return textView;
         }catch (Throwable T){
             T.printStackTrace();
@@ -486,12 +489,12 @@ public class EspressoUtils {
         }
     }
 
-    /*
+    /************************************************************************
        matcher - view on which swipe is performed (e.g. RecyclerView)
        elementToFind - elementToFind is view till which swipe will be performed
        swipeDirection - direction in which swipe will be performed (top/down/left/right)
        maxNoOfSwipes - no of maximum swipe attempts
-    */
+     ************************************************************************/
     public static boolean swipeToElement(Matcher matcher, Matcher elementToFind, String swipeDirection, int maxNoOfSwipes){
         for(int i=0;i<maxNoOfSwipes;i++) {
             if(isViewVisible(elementToFind)){
@@ -550,7 +553,7 @@ public class EspressoUtils {
      * It will keep on trying to find element after every (retryInterval) ms and
      * will wait for maximum time of (maxWaitTime) ms
     ****************************************************************************************/
-    public void waitForElementToLoad(Matcher matcher,int retryInterval, int maxWaitTime){
+    public static void waitForElementToLoad(Matcher matcher,int retryInterval, int maxWaitTime){
         int count = 0;
         while(true){
             try{
@@ -562,5 +565,59 @@ public class EspressoUtils {
                 EspressoUtils.forceWait(retryInterval);
             }
         }
+    }
+
+
+    public static void replaceText(Matcher matcher, String replaceString){
+        isViewEnabled(matcher);
+        onView(matcher).
+                check(ViewAssertions.matches(
+                        ViewMatchers.isEnabled())
+                ).perform(ViewActions.replaceText(replaceString));
+    }
+
+    public static Matcher<View> verifyTextFieldErrorMessage(final String expectedErrorText) {
+        return new TypeSafeMatcher<View>() {
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view instanceof EditText)) {
+                    return false;
+                }
+                CharSequence error = ((EditText) view).getError();
+                if (error == null) {
+                    return false;
+                }
+                String actualErrorText = error.toString();
+                return expectedErrorText.equals(actualErrorText);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+            }
+        };
+    }
+
+    public static String getErrorText(final Matcher<View> matcher) {
+        final String[] errorText = { null };
+        onView(matcher).perform(new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextView.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "getting error message from a TextView";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                CharSequence error = ((EditText) view).getError();
+                String actualErrorText = error.toString();
+                errorText[0] = actualErrorText;
+            }
+        });
+        return errorText[0];
     }
 }

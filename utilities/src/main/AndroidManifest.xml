@@ -1,1 +1,12 @@
-<manifest package="com.treebo.espressocommons" />
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+package="com.treebo.espressocommons">
+
+<uses-sdk
+    android:targetSdkVersion="25"
+    android:minSdkVersion="16"
+    tools:overrideLibrary="android.support.test.uiautomator.v18"/>
+
+</manifest>
