@@ -12,8 +12,9 @@ project and avoid a whole lot of boiler plate code.
 ### Adding dependencies ###
 
 Add the following line in your `build.gradle` file
-```` compile 'com.treebo:espresso-utils:1.0.9'
-````
+```
+compile 'com.treebo:espresso-utils:1.0.9'
+```
 
 # Usage #
 
