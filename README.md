@@ -15,8 +15,9 @@ project and avoid a whole lot of boiler plate code.
 
 The list of all the functions that can be used are below -
 
+
 | Function Name | Params | Return Value | Description |
-| ---- | ---- | ---- | ---- | ---- |
+| --- | --- | --- | --- |
 | getErrorText |  matcher -  view which you want to match | String - error text | This method returns the error text of an edittext |
 | verifyTextFieldErrorMessage | View - edittext to be checked <br/> errorText - Expected error text string | boolean - true/false | This method checks if the error text on an edittext is as expected|
 | replaceText |  matcher -  view which you want to match<br/> replaceString - String you want the view to be updated with| `void` | This method replaces the text of a view with the specified text |
@@ -26,7 +27,7 @@ The list of all the functions that can be used are below -
 
 
 
-### Contribution guidelines ###
+# Contribution guidelines #
 
 Want to contribute? Great!
 Just fork and raise a PR!
@@ -36,6 +37,6 @@ Just fork and raise a PR!
 * You can reach out to: [@Abhi1Nair] or [abhishek.nair@treebohotels.com]
 
 
-### Licence ###
+## Licence #
 
 MIT
