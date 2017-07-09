@@ -44,4 +44,4 @@ Just fork and raise a PR!
 
 ## Licence #
 
-MIT
+GNU GENERAL PUBLIC LICENSE
