@@ -39,7 +39,7 @@ Just fork and raise a PR!
 
 ### Who do I talk to? ###
 
-* You can reach out to: [@Abhi1Nair] or [abhishek.nair@treebohotels.com]
+* You can reach out to: [@Abhi1Nair](https://twitter.com/Abhi1Nair) or [abhishek.nair@treebohotels.com]
 
 
 ## Licence #
