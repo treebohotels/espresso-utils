@@ -39,7 +39,7 @@ public class DataObjects {
      *
      * @param fileName : Name of the Yaml file
      * @param recordNo :
-     * @return Hashmap<String,String> to readYaml Method
+     * @return Hashmap to readYaml Method
      **/
     public HashMap<String, String> readYaml(int fileName, int recordNo, String... randomStr) {
         String TAG = "Read Data Objects";
