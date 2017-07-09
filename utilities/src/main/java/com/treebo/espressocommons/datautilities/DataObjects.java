@@ -11,20 +11,24 @@ import java.util.Random;
  */
 
 public class DataObjects {
+
     private YamlUtils yamlUtils = null;
-    private LinkedHashMap<Object,Object> lhm = null;
+    private LinkedHashMap<Object, Object> lhm = null;
     private HashMap<String, String> dataObj = null;
 
     /**
-    * randomString(<length>) generates random alphabetical string for the given length
-    **/
-    public String randomString( int len ){
+     * randomString(<length>) generates random alphabetical string for the given length
+     *
+     * @param len: Length of the random string desired
+     * @return A random string of length specified
+     **/
+    public String randomString(int len) {
         final String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         Random rnd = new Random();
 
-        StringBuilder sb = new StringBuilder( len );
-        for( int i = 0; i < len; i++ ){
-            sb.append( AB.charAt(rnd.nextInt(AB.length()) ) );
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
         }
         return sb.toString();
     }
@@ -32,13 +36,16 @@ public class DataObjects {
     /**
      * readYaml(<file>, <index>) reads file name and index
      * Reads Yaml files and loads data for the given index in to Hashmap
-     * Returns Hashmap<String,String> to readYaml Method
+     *
+     * @param fileName : Name of the Yaml file
+     * @param recordNo :
+     * @return Hashmap<String,String> to readYaml Method
      **/
-    public HashMap<String, String> readYaml(int fileName, int recordNo, String... randomStr){
+    public HashMap<String, String> readYaml(int fileName, int recordNo, String... randomStr) {
         String TAG = "Read Data Objects";
         dataObj = new HashMap<String, String>();
 
-        if(yamlUtils == null){
+        if (yamlUtils == null) {
             try {
                 yamlUtils = new YamlUtils();
                 Log.i(TAG, "Loaded Yaml Utils");
@@ -47,12 +54,12 @@ public class DataObjects {
                 return null;
             }
         }
-        lhm = yamlUtils.readYamlRecord(fileName,recordNo);
+        lhm = yamlUtils.readYamlRecord(fileName, recordNo);
 
-        for ( Object key : lhm.keySet() ) {
-            dataObj.put(key.toString(),lhm.get(key).toString());
+        for (Object key : lhm.keySet()) {
+            dataObj.put(key.toString(), lhm.get(key).toString());
         }
-        Log.i(TAG,"Yaml Record:" + recordNo + "   &&&&   Data:" + dataObj);
+        Log.i(TAG, "Yaml Record:" + recordNo + "   &&&&   Data:" + dataObj);
         return dataObj;
     }
 }

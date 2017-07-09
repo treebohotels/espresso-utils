@@ -6,7 +6,7 @@ package com.treebo.espressocommons.testrunner.executiontypes;
 
 /**
  * Interface High is being used for Junit Categories annotation.
- * eg: If test case tighly binds with high use case automation. Add High tag to tests as categories.
+ * eg: If test case tightly binds with high use case automation. Add High tag to tests as categories.
  **/
 public interface High {
 }

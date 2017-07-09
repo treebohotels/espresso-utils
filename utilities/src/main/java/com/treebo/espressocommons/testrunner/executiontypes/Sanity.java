@@ -6,7 +6,7 @@ package com.treebo.espressocommons.testrunner.executiontypes;
 
 /**
  * Interface Sanity is being used for Junit Categories annotation.
- * eg: If test case tighly binds with sanity automation. Add sanity tag to tests as categories.
+ * eg: If test case tightly binds with sanity automation. Add sanity tag to tests as categories.
 **/
 public interface Sanity {
 }

@@ -24,6 +24,6 @@ import org.junit.runners.Suite;
         {
                 // All Classes
         })
-public class SampleSuiteClass extends BaseTest{
+public class SampleSuiteClass extends BaseTest {
 
 }

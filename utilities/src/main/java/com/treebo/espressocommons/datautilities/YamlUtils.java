@@ -6,7 +6,9 @@ import android.util.Log;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by bharatbudhani on 14/02/17.
@@ -21,15 +23,15 @@ public class YamlUtils {
      */
     private String TAG = "Load YAML data";
 
-    public List<LinkedHashMap<Object,Object>> readYamlData(int ip) {
-        Log.i(TAG,"Reading data from yaml: " + ip);
+    public List<LinkedHashMap<Object, Object>> readYamlData(int ip) {
+        Log.i(TAG, "Reading data from yaml: " + ip);
         InputStream ins = InstrumentationRegistry.getInstrumentation().getContext().getResources().openRawResource(ip);
         int counter = 0;
         Yaml yaml = new Yaml();
-        List<LinkedHashMap<Object,Object>> list= new ArrayList<LinkedHashMap<Object,Object>>();
+        List<LinkedHashMap<Object, Object>> list = new ArrayList<LinkedHashMap<Object, Object>>();
         for (Object data : yaml.loadAll(ins)) {
             counter++;
-            list.add((LinkedHashMap<Object,Object>)data);
+            list.add((LinkedHashMap<Object, Object>) data);
         }
         return list;
     }
@@ -40,11 +42,11 @@ public class YamlUtils {
      Where user is name of file (user.yml)
      recordno => index of record which is required from yml file
      */
-    public LinkedHashMap<Object,Object> readYamlRecord(int ip, int recordNo){
-        List<LinkedHashMap<Object,Object>> list= readYamlData(ip);
-        Log.i(TAG+ip,"Data loaded from Yaml File");
-        LinkedHashMap<Object,Object> lhm = (LinkedHashMap<Object,Object>) list.get(recordNo);
-        Log.i(TAG+ip,"Data loaded for Record: " + recordNo);
+    public LinkedHashMap<Object, Object> readYamlRecord(int ip, int recordNo) {
+        List<LinkedHashMap<Object, Object>> list = readYamlData(ip);
+        Log.i(TAG + ip, "Data loaded from Yaml File");
+        LinkedHashMap<Object, Object> lhm = list.get(recordNo);
+        Log.i(TAG + ip, "Data loaded for Record: " + recordNo);
         return lhm;
     }
 }
